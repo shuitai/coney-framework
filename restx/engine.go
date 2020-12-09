@@ -37,6 +37,11 @@ func (s *engine) Start() error {
     s.application.Use(logger.New(logger.Config{
         TimeFormat: "2006-01-02T15:04:05",
     }))
+
+    for _, middleware := range s.middlewares {
+        s.application.Use(middleware)
+    }
+
     contextPath := s.conf.ContextPath
     group := s.application.Group(contextPath)
     for _, r := range s.routes {
